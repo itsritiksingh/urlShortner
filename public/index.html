@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="main.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <nav>
+      Url Shortner
+    </nav>
+    <div class="header">
+      <h1>PresentBlogging Encryption</h1>
+      <h4>
+        Encrypting your link and protect the link from viruses, malware, thief,
+        etc! Made your link safe to visit.
+      </h4>
+    </div>
+    <div class="card">
+      <div class="cardHead">Url Shortner</div>
+      <form class="cardBody" action="/generateLink">
+        <input type="url" name="url" placeholder="Https:// " />
+        <input type="submit" value="submit" />
+      </form>
+    </div>
+    <div class="Dialog">
+      <button>Copy</button>
+    </div>
+    <div class="center">
+      <p>
+        How to use our tool Put the link on the Safe Link Converter box with
+        http:// or https:// Use CTRL + V on keyboard to put the link.
+      </p>
+      <br />
+      <p>
+        Click the Generate button to get encrypted link. <br />
+        Click the button. Done.
+      </p>
+    </div>
+    <footer>
+      <div class="center2">
+        Thank you for Using Url Shortner
+      </div>
+    </footer>
+    <script defer>
+    document.body.onload = async ()=>{
+      var clip = await navigator.clipboard.readText();
+        const input =  document.querySelector('input[type="url"]');
+        input.value = clip;
+    }
+      const form = document.querySelector("form");
+      form.addEventListener("submit", e => {
+        e.preventDefault();
+        var formData = new FormData(form);
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/generateLink");
+        xhr.send(formData);
+        xhr.onload = () => {
+          var Dialog = document.querySelector(".Dialog");
+          var button = document.querySelector(".Dialog button");
+          var input = document.createElement("input");
+          input.setAttribute('type','url');
+          Dialog.classList.add("show");
+          var res = JSON.parse(xhr.response);
+          input.value = res.url;
+          console.log(res)
+
+          Dialog.insertBefore(input,button);
+          input.select();
+          document.execCommand('copy');
+          document.body.style.backgroundColor = "gray";
+          document.body.addEventListener("click", e => {
+            if (e.target.tagName != "DIV" && e.target.tagName != "INPUT") {
+              Dialog.classList.remove("show");
+              document.body.style.backgroundColor = "white";
+              document.body.removeEventListener("click", () => {});
+            }
+          });
+        };
+      });
+    </script>
+  </body>
+</html>
