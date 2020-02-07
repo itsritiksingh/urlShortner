@@ -2,6 +2,7 @@ const express = require("express");
 var fs = require('fs');
 const fileUpload = require('express-fileupload');
 const app = express();
+const port = process.env.PORT || 5000;
 
 app.use(fileUpload());
 app.use(express.urlencoded({extended:false}))
@@ -30,4 +31,4 @@ app.get('*',(req,res)=>{
     html.pipe(res);
 })
 
-app.listen(5000,()=> console.log('server started'));
+app.listen(port,()=> console.log('server started'));
